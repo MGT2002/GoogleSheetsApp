@@ -4,6 +4,8 @@ using System.Linq;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Services;
+using static Google.Apis.Sheets.v4.SpreadsheetsResource
+    .ValuesResource.GetRequest;
 
 namespace GoogleSheetsApp
 {
@@ -11,6 +13,7 @@ namespace GoogleSheetsApp
     {
         private const string apiKey = "AIzaSyBUU9R7_wicSiNDiR1kTF4ihiJkC7Hssf4";
         private readonly static SheetsService service;
+        private readonly bool getFormula;
         public string SheetUrl { get; }
         public string SpreadsheetId { get; }
 
@@ -24,10 +27,11 @@ namespace GoogleSheetsApp
             });
 
         }
-        public SheetManager(string sheetUrl)
+        public SheetManager(string sheetUrl, bool getFormula = false)
         {
             SheetUrl = sheetUrl;
             SpreadsheetId = sheetUrl.Split('/')[5];
+            this.getFormula = getFormula;
         }
 
         /// <summary>Gets data from your SheetUrl</summary>
@@ -36,6 +40,10 @@ namespace GoogleSheetsApp
         {
             // Read data from the spreadsheet
             var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
+            if (getFormula)
+            {
+                request.ValueRenderOption = ValueRenderOptionEnum.FORMULA;
+            }
             ValueRange response;
 
             try
