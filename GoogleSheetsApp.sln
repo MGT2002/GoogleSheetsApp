@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleSheetsApp", "GoogleSheetsApp.csproj", "{6CC271E6-D255-428F-9576-383194FDA82F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\Test\Test.csproj", "{99729002-D199-4591-BFC1-E2F6C72F169D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6CC271E6-D255-428F-9576-383194FDA82F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC271E6-D255-428F-9576-383194FDA82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC271E6-D255-428F-9576-383194FDA82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC271E6-D255-428F-9576-383194FDA82F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99729002-D199-4591-BFC1-E2F6C72F169D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99729002-D199-4591-BFC1-E2F6C72F169D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99729002-D199-4591-BFC1-E2F6C72F169D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99729002-D199-4591-BFC1-E2F6C72F169D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99B3D813-1182-4D7A-B1F7-08EDFA6E5CBF}
+	EndGlobalSection
+EndGlobal
