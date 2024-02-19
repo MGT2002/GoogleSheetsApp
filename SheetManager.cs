@@ -13,7 +13,6 @@ namespace GoogleSheetsApp
     {
         private const string apiKey = "AIzaSyBUU9R7_wicSiNDiR1kTF4ihiJkC7Hssf4";
         private readonly static SheetsService service;
-        private readonly bool getFormula;
         public string SheetUrl { get; }
         public string SpreadsheetId { get; }
 
@@ -27,16 +26,15 @@ namespace GoogleSheetsApp
             });
 
         }
-        public SheetManager(string sheetUrl, bool getFormula = false)
+        public SheetManager(string sheetUrl)
         {
             SheetUrl = sheetUrl;
             SpreadsheetId = sheetUrl.Split('/')[5];
-            this.getFormula = getFormula;
         }
 
         /// <summary>Gets data from your SheetUrl</summary>
         /// <param name="range">Sheets API range e.g. -> "A1:ZZ"</param>
-        public ValueRange? GetData(string range)
+        public ValueRange? GetData(string range, bool getFormula = false)
         {
             // Read data from the spreadsheet
             var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
