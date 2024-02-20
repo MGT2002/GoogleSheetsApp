@@ -26,6 +26,14 @@ string connectionString = "Data Source=.\\SQLEXPRESS;Initial "
       + "Catalog=GoogleSheetsAppDB;Integrated Security=True;Encrypt=False";
 DataBaseManager dataBaseManager = new(connectionString);
 
+string[] colFormats = sheetManager.GetColFormats();
+if (colFormats == null)
+{
+    Console.WriteLine("Sheet column format is unreachable!");
+    return;
+}
+FormatToSqlConverter.FixFormatForSql(response.Values, colFormats);
+
 #region Query Create Table
 Console.WriteLine("Create table in db...");
 StringBuilder query = new(
@@ -35,12 +43,14 @@ StringBuilder query = new(
 	    CREATE TABLE SheetTable (
 		    ID INT PRIMARY KEY IDENTITY,"
     );
-int maxLength = response.Values.Max(list => list.Count);
-for (int i = 0; i < maxLength; i++)
-    query.Append($"Col{i + 1} varchar(max) not null, ");
+int length = response.Values[0].Count;
+for (int i = 0; i < length; i++)
+    query.Append($"_{response.Values[0][i].ToString()?.Replace(" ", "")}"
+        + $" {FormatToSqlConverter.GetSqlType(colFormats[i])}, ");
 query.Append(");");
 
-dataBaseManager.ExecuteQuery(query.ToString());
+if (!dataBaseManager.ExecuteQuery(query.ToString()))
+    return;
 Console.WriteLine("Created!");
 #endregion
 
@@ -48,21 +58,19 @@ Console.WriteLine("Created!");
 Console.WriteLine("Inserting table values...");
 query.Clear();
 query.Append("INSERT INTO SheetTable VALUES ");
-for (int i = 0; i < response.Values.Count; i++)
+for (int i = 1; i < response.Values.Count; i++)
 {
     query.Append("(");
-    int j;
-    for (j = 0; j < response.Values[i].Count; j++)
+    for (int j = 0; j < length; j++)
         query.Append($"'{response.Values[i][j]}', ");
-    for (; j < maxLength; j++)
-        query.Append("'', ");
     query[^2] = ' ';
     query.Append("), ");
-    //("('Value1A', 'Value2A', 'Value3A', '', '', ...),");
+    //("('Value1A', 'Value2A', 'Value3A'),");
 }
 query[^2] = ';';
 
-dataBaseManager.ExecuteQuery(query.ToString());
+if (!dataBaseManager.ExecuteQuery(query.ToString()))
+    return;
 Console.WriteLine("Success!");
 #endregion 
 

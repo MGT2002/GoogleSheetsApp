@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Google.Apis.Sheets.v4;
+﻿using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Services;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource
@@ -63,6 +60,46 @@ namespace GoogleSheetsApp
             return response;
         }
 
+        /// <param name="userEnteredFormat">Set false to get effective format</param>
+        /// <returns>Array that has format of each column in its elements</returns>
+        public string[]? GetColFormats(bool userEnteredFormat = true)
+        {
+            string[]? colFormats = default;
+
+            var request = service.Spreadsheets.Get(SpreadsheetId);
+            request.IncludeGridData = true;
+
+            try
+            {
+                var response = request.Execute();
+
+                foreach (var sheet in response.Sheets)
+                {
+                    RowData row = sheet.Data[0].RowData[1];//B1:B row
+                    colFormats = new string[row.Values.Count];
+                    for (int i = 0; i < colFormats.Length; i++)
+                    {
+                        CellFormat format = userEnteredFormat ?
+                            row.Values[i].UserEnteredFormat :
+                            row.Values[i].EffectiveFormat;
+                        colFormats[i] = format.NumberFormat?.Type ?? "TEXT";
+                    }
+                }
+
+                return colFormats;
+            }
+            catch (AggregateException e)
+            {
+                foreach (var i in e.InnerExceptions)
+                    Console.WriteLine("ERROR: " + i.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR: " + e.Message);
+            }
+
+            return default;
+        }
         public static bool IsGoogleSheetsUrl(string s)
         {
             if (s == "")
