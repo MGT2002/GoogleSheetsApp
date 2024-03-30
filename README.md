@@ -1,1 +1,1 @@
-"This project grabs all data from google spreadshit url and saves it to SQL Server db"
+This app grabs all data from google spreadsheets via public url and saves it to SQL Server db.
